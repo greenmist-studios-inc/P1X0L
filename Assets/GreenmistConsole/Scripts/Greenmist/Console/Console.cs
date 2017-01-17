@@ -3,14 +3,20 @@ using UnityEngine;
 using UniRx;
 using UniRx.Diagnostics;
 using Greenmist.Console.Model;
+using UnityEngine.UI;
 
 namespace Greenmist.Console {
 
-	public class Console : MonoBehaviour {
+	public class Console : MonoBehaviour
+	{
+	    [SerializeField]
+	    private Text text;
+	    [SerializeField]
+	    private ScrollRect scrollRect;
+	    [SerializeField]
+	    public bool logOutput;
 
-		[SerializeField]
-		protected int fps = 30;
-		private Subject<Entry> consoleOutputSubject = new Subject<Entry>();
+	    private Subject<Entry> consoleOutputSubject = new Subject<Entry>();
 
 		// Use this for initialization
 		void Start ()
@@ -19,8 +25,9 @@ namespace Greenmist.Console {
 		}
 
 		// Update is called once per frame
-		void Update () {
-			
+		void Update ()
+		{
+			//D("test");
 		}
 
 		public void V(String message) {
@@ -43,11 +50,20 @@ namespace Greenmist.Console {
 			Log (LogLevel.Error, message);
 		}
 
-		private void Log(LogLevel logLevel, String message) {
-		    UnityEngine.Debug.Log (logLevel.ConsoleLogLevelString() + message);
-			Entry entry = new Entry (logLevel, message);
+		private void Log(LogLevel logLevel, String message)
+		{
+		    if (logOutput)
+		        Debug.Log(logLevel.ConsoleLogLevelString() + message);
+
+		    Entry entry = new Entry (logLevel, message);
 			consoleOutputSubject.OnNext (entry);
+		    text.text += message + "\n";
 		}
+
+	    public void Clear()
+	    {
+	        text.text = "";
+	    }
 
 		public void Subscribe(IObserver<Entry> observer) {
 			consoleOutputSubject.Debug("Console").Subscribe (observer);

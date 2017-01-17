@@ -5,7 +5,7 @@ namespace Greenmist.Console.Commands
 {
     public class QuitCommand : ConsoleCommand
     {
-        public QuitCommand(string command, string description, string usage) : base(command, description, usage)
+        public QuitCommand() : base(ConsoleInfo.QUIT)
         {
         }
 

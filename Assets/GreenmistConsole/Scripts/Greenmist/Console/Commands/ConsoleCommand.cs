@@ -9,6 +9,13 @@ namespace Greenmist.Console.Commands
         public String description { get; private set; }
         public String usage { get; private set; }
 
+        protected ConsoleCommand(ConsoleInfo consoleInfo)
+        {
+            command = consoleInfo.command;
+            description = consoleInfo.description;
+            usage = consoleInfo.usage;
+        }
+
         public ConsoleCommand(String command, string description, string usage)
         {
             this.command = command;
